@@ -33,16 +33,19 @@ def eval():
 
     p = correctSpams/spams
     r = correctSpams/actualSpams
-    f = (2 * p * r)/(p + r)
+    spam_f = (2 * p * r)/(p + r)
     print("Spam:")
-    print('Precision: ' + str(correctSpams / spams) + ' ' + 'Recall: ' + str(correctSpams / actualSpams) + ' F1: ' + str(f))
+    print('Precision: ' + str(correctSpams / spams) + ' ' + 'Recall: ' + str(correctSpams / actualSpams) + ' F1: ' + str(spam_f))
 
 
     p = correctHams/hams
     r = correctHams/actualHams
-    f = (2 * p * r)/(p + r)
+    ham_f = (2 * p * r)/(p + r)
     print("Ham:")
-    print('Precision: ' + str(correctHams / hams) + ' ' + 'Recall: ' + str(correctHams / actualHams) + ' F1: ' + str(f))
+    print('Precision: ' + str(correctHams / hams) + ' ' + 'Recall: ' + str(correctHams / actualHams) + ' F1: ' + str(ham_f))
 
+    weighted_avg_f1 = (actualSpams * spam_f)/(actualSpams + actualHams) + (actualHams * ham_f)/(actualSpams + actualHams)
+    print()
+    print("Weighted  average F1 score(WA): " + str(weighted_avg_f1))
         
 eval()
