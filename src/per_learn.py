@@ -49,18 +49,6 @@ def pack_model(weights, bias, pack_name):
         f.write(word + " " + str(weights[word]) + "\n")
     f.close()
 
-def load_model(weights, bias, pack_name):
-    f = open(pack_name, "r", encoding="latin1")
-    bias[0] = int(f.readline())
-    size = int(f.readline())
-    for i in range(0, size):
-        line = f.readline()
-        param = line.split()
-        word = param[0]
-        weight = int(param[1])
-        weights[word] = weight
-    f.close()
-
 def __main():
     parser = argparse.ArgumentParser()
 

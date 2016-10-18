@@ -21,14 +21,15 @@ def inner_avg_per_learn(features_map, files_list, weights, bias, u_weights, beta
         alpha = 0
         feature = features_map[file_name]
         map = feature.hashmap
-        for key in map.keys():
-            xi = map[key]
-            if not(key in weights.keys()): weights[key] = 0
-            if not(key in u_weights.keys()): u_weights[key] = 0
-            wi = weights[key]
+        for d in map.keys():
+            xi = map[d]
+            if not(d in weights.keys()): weights[d] = 0
+            if not(d in u_weights.keys()): u_weights[d] = 0
+            wi = weights[d]
             alpha += (xi * wi)
-        y = feature.type
+        alpha += bias[0]
 
+        y = feature.type
         if y * alpha <= 0:
             for key in map.keys():
                 xd = map[key]
@@ -50,9 +51,11 @@ def avg_per_learn(features_map, files_list, u_weights, beta, max_iter):
     for i in range(0, max_iter):
         inner_avg_per_learn(features_map, files_list, weights, b, u_weights, beta, c)
 
-    for key in u_weights.keys():
-        u_weights[key] = weights[key] - (1/c[0]) * u_weights[key]
+    for d in u_weights.keys():
+        u_weights[d] = weights[d] - (1/c[0]) * u_weights[d]
+
     beta[0] = b[0] - (1/c[0]) * beta[0]
+    # print()
 
 
 def pack_model(weights, bias, pack_name):
@@ -66,18 +69,6 @@ def pack_model(weights, bias, pack_name):
         f.write(word + " " + str(weights[word]) + "\n")
     f.close()
 
-def load_model(weights, bias, pack_name):
-    f = open(pack_name, "r", encoding="latin1")
-    bias[0] = int(f.readline())
-    size = int(f.readline())
-    for i in range(0, size):
-        line = f.readline()
-        param = line.split()
-        word = param[0]
-        weight = int(param[1])
-        weights[word] = weight
-    f.close()
-
 def __main():
     parser = argparse.ArgumentParser()
 
@@ -89,8 +80,6 @@ def __main():
     files_list = []
     weights = {}
     bias = [0]
-
-
 
     for root, dirs, files in os.walk(input_path):
         for file in files:
