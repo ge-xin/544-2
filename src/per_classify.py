@@ -3,13 +3,13 @@ import os
 
 def load_model(weights, bias, pack_name):
     f = open(pack_name, "r", encoding="latin1")
-    bias[0] = int(f.readline())
+    bias[0] = float(f.readline())
     size = int(f.readline())
     for i in range(0, size):
         line = f.readline()
         param = line.split()
         word = param[0]
-        weight = int(param[1])
+        weight = float(param[1])
         weights[word] = weight
     f.close()
 

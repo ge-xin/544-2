@@ -1,6 +1,5 @@
 import argparse
 import os
-from copy import deepcopy
 import random
 
 class Feature:
