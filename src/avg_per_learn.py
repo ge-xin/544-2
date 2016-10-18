@@ -78,8 +78,8 @@ def __main():
 
     features_map = {}
     files_list = []
-    weights = {}
-    bias = [0]
+    u_weights = {}
+    beta = [0]
 
     for root, dirs, files in os.walk(input_path):
         for file in files:
@@ -95,16 +95,16 @@ def __main():
                 features_map[file_path] = feature
 
     MAX_ITER = 30; #For avg_per_learn.py: 30.
-    avg_per_learn(features_map, files_list, weights, bias, 2)
+    avg_per_learn(features_map, files_list, u_weights, beta, MAX_ITER)
 
     PACK_NAME = "./per_model.txt"
-    pack_model(weights, bias, PACK_NAME)
+    pack_model(u_weights, beta, PACK_NAME)
 
-    # a_weights = {}
-    # a_bias = [0]
-    # load_model(a_weights, a_bias, PACK_NAME)
-    # if weights != a_weights: print("Wrong weights")
-    # if bias != a_bias: print("Wrong bias")
+    # a_u_weights = {}
+    # a_beta = [0]
+    # load_model(a_u_weights, a_beta, PACK_NAME)
+    # if u_weights != a_u_weights: print("Wrong u_weights")
+    # if beta != a_beta: print("Wrong beta")
 
     # print("done")
 
@@ -120,8 +120,8 @@ __main()
 #                  '/Users/Xin/Desktop/debug/6.spam.txt',
 #                  '/Users/Xin/Desktop/debug/7.ham.txt',
 #                  '/Users/Xin/Desktop/debug/8.ham.txt']
-#     weights = {}
-#     bias = [0]
+#     u_weights = {}
+#     beta = [0]
 #
 #     for file in files_list:
 #         feature = Feature()
@@ -131,8 +131,8 @@ __main()
 #             feature.type = 1
 #         word_frequency_stat(feature, file)
 #         features_map[file] = feature
-#     avg_per_learn(features_map, files_list, weights, bias, 2)
+#     avg_per_learn(features_map, files_list, u_weights, beta, 2)
 #     PACK_NAME = "./per_model.txt"
-#     pack_model(weights, bias, PACK_NAME)
+#     pack_model(u_weights, beta, PACK_NAME)
 #     print()
 # __debug()
