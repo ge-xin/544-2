@@ -26,6 +26,7 @@ def inner_per_learn(features_map, files_list, weights, bias):
             if not(key in weights.keys()): weights[key] = 0
             wi = weights[key]
             alpha += (xi * wi)
+        alpha += bias
         y = feature.type
         if y * alpha <= 0:
             for key in map.keys():
