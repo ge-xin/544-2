@@ -16,7 +16,7 @@ def word_frequency_stat(feature, file_path):
     f.close()
 
 def inner_avg_per_learn(features_map, files_list, weights, bias, u_weights, beta, c):
-    # random.shuffle(files_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
+    random.shuffle(files_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
     for file_name in files_list:
         alpha = 0
         feature = features_map[file_name]
@@ -45,13 +45,13 @@ def inner_avg_per_learn(features_map, files_list, weights, bias, u_weights, beta
 def avg_per_learn(features_map, files_list, u_weights, beta, max_iter):
     weights = {}
     b = [0]
-    c = [0]
+    c = [1]
 
     for i in range(0, max_iter):
         inner_avg_per_learn(features_map, files_list, weights, b, u_weights, beta, c)
 
     for key in u_weights.keys():
-        u_weights[key] *= weights[key] - (1/c[0]) * u_weights[key]
+        u_weights[key] = weights[key] - (1/c[0]) * u_weights[key]
     beta[0] = b[0] - (1/c[0]) * beta[0]
 
 
@@ -90,7 +90,7 @@ def __main():
     weights = {}
     bias = [0]
 
-    MAX_ITER = 20; #For per_learn.py: 20.
+
 
     for root, dirs, files in os.walk(input_path):
         for file in files:
@@ -105,7 +105,8 @@ def __main():
                 word_frequency_stat(feature, file_path)
                 features_map[file_path] = feature
 
-    per_avg_learn(features_map, files_list, weights, bias, max_iter=MAX_ITER)
+    MAX_ITER = 30; #For avg_per_learn.py: 30.
+    avg_per_learn(features_map, files_list, weights, bias, 2)
 
     PACK_NAME = "./per_model.txt"
     pack_model(weights, bias, PACK_NAME)
@@ -118,31 +119,31 @@ def __main():
 
     # print("done")
 
-# __main()
+__main()
 
-def __debug():
-    features_map = {}
-    files_list = ['/Users/Xin/Desktop/debug/1.spam.txt',
-                 '/Users/Xin/Desktop/debug/2.ham.txt',
-                 '/Users/Xin/Desktop/debug/3.spam.txt',
-                 '/Users/Xin/Desktop/debug/4.ham.txt',
-                 '/Users/Xin/Desktop/debug/5.ham.txt',
-                 '/Users/Xin/Desktop/debug/6.spam.txt',
-                 '/Users/Xin/Desktop/debug/7.ham.txt',
-                 '/Users/Xin/Desktop/debug/8.ham.txt']
-    weights = {}
-    bias = [0]
-
-    for file in files_list:
-        feature = Feature()
-        if file.endswith(".ham.txt"):
-            feature.type = -1
-        else:
-            feature.type = 1
-        word_frequency_stat(feature, file)
-        features_map[file] = feature
-    avg_per_learn(features_map, files_list, weights, bias, 2)
-    PACK_NAME = "./per_model.txt"
-    pack_model(weights, bias, PACK_NAME)
-    print()
-__debug()
+# def __debug():
+#     features_map = {}
+#     files_list = ['/Users/Xin/Desktop/debug/1.spam.txt',
+#                  '/Users/Xin/Desktop/debug/2.ham.txt',
+#                  '/Users/Xin/Desktop/debug/3.spam.txt',
+#                  '/Users/Xin/Desktop/debug/4.ham.txt',
+#                  '/Users/Xin/Desktop/debug/5.ham.txt',
+#                  '/Users/Xin/Desktop/debug/6.spam.txt',
+#                  '/Users/Xin/Desktop/debug/7.ham.txt',
+#                  '/Users/Xin/Desktop/debug/8.ham.txt']
+#     weights = {}
+#     bias = [0]
+#
+#     for file in files_list:
+#         feature = Feature()
+#         if file.endswith(".ham.txt"):
+#             feature.type = -1
+#         else:
+#             feature.type = 1
+#         word_frequency_stat(feature, file)
+#         features_map[file] = feature
+#     avg_per_learn(features_map, files_list, weights, bias, 2)
+#     PACK_NAME = "./per_model.txt"
+#     pack_model(weights, bias, PACK_NAME)
+#     print()
+# __debug()
