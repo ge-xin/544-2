@@ -15,12 +15,11 @@ def word_frequency_stat(feature, file_path):
             else: map[word] = 1
     f.close()
 
-def inner_avg_per_learn(features_map, files_list, weights, bias, u_weights, beta, c):
-    random.shuffle(files_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
-    for file_name in files_list:
+def inner_avg_per_learn(features_list, weights, bias, u_weights, beta, c):
+    random.shuffle(features_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
+    for f in features_list:
         alpha = 0
-        feature = features_map[file_name]
-        map = feature.hashmap
+        map = f.hashmap
         for d in map.keys():
             xi = map[d]
             if not(d in weights.keys()): weights[d] = 0
@@ -29,7 +28,7 @@ def inner_avg_per_learn(features_map, files_list, weights, bias, u_weights, beta
             alpha += (xi * wi)
         alpha += bias[0]
 
-        y = feature.type
+        y = f.type
         if y * alpha <= 0:
             for key in map.keys():
                 xd = map[key]
@@ -43,13 +42,13 @@ def inner_avg_per_learn(features_map, files_list, weights, bias, u_weights, beta
 
         c[0] += 1
 
-def avg_per_learn(features_map, files_list, u_weights, beta, max_iter):
+def avg_per_learn(features_list, u_weights, beta, max_iter):
     weights = {}
     b = [0]
     c = [1]
 
     for i in range(0, max_iter):
-        inner_avg_per_learn(features_map, files_list, weights, b, u_weights, beta, c)
+        inner_avg_per_learn(features_list, weights, b, u_weights, beta, c)
 
     for d in u_weights.keys():
         u_weights[d] = weights[d] - (1/c[0]) * u_weights[d]
@@ -76,8 +75,7 @@ def __main():
     arg = parser.parse_args()
     input_path = arg.path_to_input
 
-    features_map = {}
-    files_list = []
+    features_list = []
     u_weights = {}
     beta = [0]
 
@@ -86,16 +84,16 @@ def __main():
             if file.endswith("txt"):
                 file_path = os.path.join(root, file)
                 feature = Feature()
-                files_list.append(file_path)
+                feature.file_name = file_path
                 if root.endswith("ham"):
                     feature.type = -1
                 elif root.endswith("spam"):
                     feature.type = 1
                 word_frequency_stat(feature, file_path)
-                features_map[file_path] = feature
+                features_list.append(feature)
 
     MAX_ITER = 30; #For avg_per_learn.py: 30.
-    avg_per_learn(features_map, files_list, u_weights, beta, MAX_ITER)
+    avg_per_learn(features_list, u_weights, beta, MAX_ITER)
 
     PACK_NAME = "./per_model.txt"
     pack_model(u_weights, beta, PACK_NAME)

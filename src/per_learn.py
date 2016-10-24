@@ -15,28 +15,27 @@ def word_frequency_stat(feature, file_path):
             else: map[word] = 1
     f.close()
 
-def inner_per_learn(features_map, files_list, weights, bias):
-    random.shuffle(files_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
-    for file_name in files_list:
+def inner_per_learn(features_list, weights, bias):
+    random.shuffle(features_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
+    for f in features_list:
         alpha = 0
-        feature = features_map[file_name]
-        map = feature.hashmap
+        map = f.hashmap
         for key in map.keys():
             xi = map[key]
             if not(key in weights.keys()): weights[key] = 0
             wi = weights[key]
             alpha += (xi * wi)
         alpha += bias[0]
-        y = feature.type
+        y = f.type
         if y * alpha <= 0:
             for key in map.keys():
                 xd = map[key]
                 weights[key] += (y * xd)
             bias[0] += y
 
-def per_learn(features_map, files_list, weights, bias, max_iter):
+def per_learn(features_list, weights, bias, max_iter):
     for i in range(0, max_iter):
-        inner_per_learn(features_map, files_list, weights, bias)
+        inner_per_learn(features_list, weights, bias)
 
 def pack_model(weights, bias, pack_name):
     try:
@@ -56,8 +55,7 @@ def __main():
     arg = parser.parse_args()
     input_path = arg.path_to_input
 
-    features_map = {}
-    files_list = []
+    features_list = []
     weights = {}
     bias = [0]
 
@@ -68,15 +66,15 @@ def __main():
             if file.endswith("txt"):
                 file_path = os.path.join(root, file)
                 feature = Feature()
-                files_list.append(file_path)
+                feature.file_name = file_path
                 if root.endswith("ham"):
                     feature.type = -1
                 elif root.endswith("spam"):
                     feature.type = 1
                 word_frequency_stat(feature, file_path)
-                features_map[file_path] = feature
+                features_list.append(feature)
 
-    per_learn(features_map, files_list, weights, bias, max_iter=MAX_ITER)
+    per_learn(features_list, weights, bias, MAX_ITER)
 
     PACK_NAME = "./per_model.txt"
     pack_model(weights, bias, PACK_NAME)
