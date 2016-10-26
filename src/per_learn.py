@@ -18,19 +18,19 @@ def word_frequency_stat(feature, file_path):
 def inner_per_learn(features_list, weights, bias):
     random.shuffle(features_list) #WARNING: NEED TO NOTICE HERE, BECAUSE FOR DEBUGING, IT WILL BE COMMENTED.
     for f in features_list:
-        alpha = 0
+        alpha = bias[0]
         map = f.hashmap
-        for key in map.keys():
-            xi = map[key]
-            if not(key in weights.keys()): weights[key] = 0
-            wi = weights[key]
-            alpha += (xi * wi)
-        alpha += bias[0]
+        for d in map.keys():
+            xd = map[d]
+            if not(d in weights.keys()): weights[d] = 0
+            wd = weights[d]
+            alpha += (xd * wd)
+
         y = f.type
         if y * alpha <= 0:
-            for key in map.keys():
-                xd = map[key]
-                weights[key] += (y * xd)
+            for d in map.keys():
+                xd = map[d]
+                weights[d] += (y * xd)
             bias[0] += y
 
 def per_learn(features_list, weights, bias, max_iter):

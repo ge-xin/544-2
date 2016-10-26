@@ -15,7 +15,7 @@ def load_model(weights, bias, pack_name):
 
 def per_classify(file_path, weights, bias):
     f = open(file_path, "r", encoding="latin1")
-    alpha = 0
+    alpha = bias[0]
     for line in f:
         for word in line.split():
             if not(word in weights.keys()):
@@ -23,7 +23,6 @@ def per_classify(file_path, weights, bias):
             wd = weights[word]
             alpha += wd #for each time only encounter word for one time
 
-    alpha += bias[0]
     f.close()
     if alpha > 0:  return 1
     else: return -1

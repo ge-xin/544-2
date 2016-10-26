@@ -22,8 +22,9 @@ def inner_avg_per_learn(features_list, weights, bias, u_weights, beta, c):
         map = f.hashmap
         for d in map.keys():
             xi = map[d]
-            if not(d in weights.keys()): weights[d] = 0
-            if not(d in u_weights.keys()): u_weights[d] = 0
+            if not(d in weights.keys()):
+                weights[d] = 0
+                u_weights[d] = 0
             wi = weights[d]
             alpha += (xi * wi)
         alpha += bias[0]
