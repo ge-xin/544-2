@@ -110,7 +110,7 @@ def __main():
 __main()
 
 # def __debug():
-#     features_map = {}
+#     features_list = {}
 #     files_list = ['/Users/Xin/Desktop/debug/1.spam.txt',
 #                  '/Users/Xin/Desktop/debug/2.ham.txt',
 #                  '/Users/Xin/Desktop/debug/3.spam.txt',
@@ -129,8 +129,9 @@ __main()
 #         else:
 #             feature.type = 1
 #         word_frequency_stat(feature, file)
-#         features_map[file] = feature
-#     avg_per_learn(features_map, files_list, u_weights, beta, 2)
+#         feature.file_name = file
+#         features_list.append(feature)
+#     avg_per_learn(features_list, u_weights, beta, 2)
 #     PACK_NAME = "./per_model.txt"
 #     pack_model(u_weights, beta, PACK_NAME)
 #     print()
