@@ -1,0 +1,62 @@
+Assignment 2 Report
+
+Name: Xin Ge
+
+Part I.
+
+1. Performance of standard perceptron on the development data with 100% of the training data
+1a. spam precision:0.9872178406309492
+1b. spam recall: 0.9877551020408163
+1c. spam F1 score: 0.9874863982589772
+1d. ham precision: 0.9699599465954606
+1e. ham recall:  0.9686666666666667
+1f. ham F1 score: 0.9693128752501667
+
+2. Performance of averaged perceptron on the development data with 100% of the training data
+2a. spam precision: 0.9855899945622622
+2b. spam recall:  0.9863945578231292
+2c. spam F1 score:  0.9859921120631036
+2d. ham precision: 0.9665998663994656 
+2e. ham recall:  0.9646666666666667
+2f. ham F1 score: 0.9656322989656323
+
+Part II.
+
+3. Performance of standard perceptron on the development data with 10% of the training data
+3a. spam precision: 0.9656970362239298
+3b. spam recall: 0.9575510204081633 
+3c. spam F1 score: 0.9616067768820877
+3d. ham precision: 0.8981058131939909
+3e. ham recall: 0.9166666666666666
+3f. ham F1 score: 0.9072913229957109
+
+4. Performance of averaged perceptron on the development data with 10% of the training data
+4a. spam precision: 0.9713968342127187
+4b. spam recall:  0.9518367346938775
+4c. spam F1 score:  0.9615173172072567
+4d. ham precision: 0.8875476493011436
+4e. ham recall:  0.9313333333333333
+4f. ham F1 score: 0.9089134677944046
+
+Part III. You are welcome to reuse code you wrote for assignment 1,
+but we would like to know how you handled the following tasks.
+
+5. How did you calculate precision, recall and F1 score? If you used a
+separate script, please give the name of the script and describe how
+to run it.
+
+The name of script is per_eval.py
+Because all the dev data student can use is labeled with .ham.txt or .spam.txt, I choose to use
+a method that read each line of the output file. By this mean, we can know actually how many f-
+iles are ham, how many files are spam. And we can know the tp, fp, tn, fn. Then according to t-
+he precision, recall and F1 score's formulas, I can calculate the values.
+
+6. How did you separate 10% of the training data? If you used a
+separate script, please give the name of the script and describe how
+to run it. Explain how you or your code choose the files.
+
+The name of the script is pick.py.
+First the script is given a root directory where contains all the trainning data. Then I use os.
+walk() to get all the spams and hams, and store them in seperate lists. When generating 10% of t-
+raining data, generate targeting number of hams and spams. Then generate random indices for each
+class until targeting number of hams and spams is picked.
