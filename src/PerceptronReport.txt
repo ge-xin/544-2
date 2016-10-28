@@ -47,7 +47,7 @@ to run it.
 
 The name of script is per_eval.py
 Because all the dev data student can use is labeled with .ham.txt or .spam.txt, I choose to use
-a method that read each line of the output file. By this mean, we can know actually how many f-
+a method that read each line of the output file. By this mean, I can know actually how many f-
 iles are ham, how many files are spam. And we can know the tp, fp, tn, fn. Then according to t-
 he precision, recall and F1 score's formulas, I can calculate the values.
 
